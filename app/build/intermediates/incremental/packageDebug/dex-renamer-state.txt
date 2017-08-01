@@ -1,0 +1,7 @@
+#Tue Aug 01 15:09:31 CST 2017
+base.0=D\:\\roidproject\\WeChatSDK\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_1d894d3544459a2180a190f33a7f5fe0207434e4
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=D\:\\roidproject\\WeChatSDK\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_13f8b2a016c4e7b4f268fcf476af82bfc15632f6\\classes.dex
+base.1=D\:\\roidproject\\WeChatSDK\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_13f8b2a016c4e7b4f268fcf476af82bfc15632f6
+file.0=D\:\\roidproject\\WeChatSDK\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_1d894d3544459a2180a190f33a7f5fe0207434e4\\classes.dex

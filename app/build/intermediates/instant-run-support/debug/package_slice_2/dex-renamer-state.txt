@@ -1,0 +1,4 @@
+#Tue Aug 01 16:11:44 CST 2017
+base.0=D\:\\roidproject\\WeChatSDK\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_2
+renamed.0=classes.dex
+file.0=D\:\\roidproject\\WeChatSDK\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_2\\classes.dex

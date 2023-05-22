@@ -5,9 +5,7 @@
 
     <TextView
         android:id="@+id/result_tv"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-	 	android:textSize="20dp"
+	 	style="@style/TitleText"
         android:text="@string/enter"/>
     
     <Button
@@ -23,6 +21,17 @@
         android:text="@string/goto_send"/>
     
     <Button
+        android:id="@+id/goto_pay_btn"
+        style="@style/MMLineActionButton"
+	    android:layout_margin="10dp"
+        android:text="@string/goto_pay"/>
+    <Button
+        android:id="@+id/goto_fav_btn"
+        style="@style/MMLineActionButton"
+	    android:layout_margin="10dp"
+        android:text="@string/goto_fav"/>
+    
+    <Button
         android:id="@+id/launch_wx_btn"
         style="@style/MMLineActionButton"
 	    android:layout_margin="10dp"
@@ -33,11 +42,5 @@
         style="@style/MMLineActionButton"
         android:layout_margin="10dp"
         android:text="@string/check_timeline_supported"/>
-    
-    <Button
-        android:id="@+id/scan_qrcode_login_btn"
-        style="@style/MMLineActionButton"
-        android:layout_margin="10dp"
-        android:text="@string/scan_qrcode_login"/>
 
 </LinearLayout>

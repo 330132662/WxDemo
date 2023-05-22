@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -17,20 +18,21 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import net.sourceforge.simcpux.AddFavoriteToWXActivity;
 import net.sourceforge.simcpux.Constants;
 import net.sourceforge.simcpux.GetFromWXActivity;
+import net.sourceforge.simcpux.PayActivity;
 import net.sourceforge.simcpux.R;
-import net.sourceforge.simcpux.ScanQRCodeLoginActivity;
 import net.sourceforge.simcpux.SendToWXActivity;
 import net.sourceforge.simcpux.ShowFromWXActivity;
 
-public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
+public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 	
 	private static final int TIMELINE_SUPPORTED_VERSION = 0x21020001;
 	
-	private Button gotoBtn, regBtn, launchBtn, checkBtn, scanBtn;
+	private Button gotoBtn, regBtn, launchBtn, checkBtn, payBtn, favButton;
 	
-	// IWXAPI ÊÇµÚÈı·½appºÍÎ¢ĞÅÍ¨ĞÅµÄopenapi½Ó¿Ú
+	// IWXAPI æ˜¯ç¬¬ä¸‰æ–¹appå’Œå¾®ä¿¡é€šä¿¡çš„openapiæ¥å£
     private IWXAPI api;
 	
     @Override
@@ -38,7 +40,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
         
-        // Í¨¹ıWXAPIFactory¹¤³§£¬»ñÈ¡IWXAPIµÄÊµÀı
+        // é€šè¿‡WXAPIFactoryå·¥å‚ï¼Œè·å–IWXAPIçš„å®ä¾‹
     	api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
 
     	regBtn = (Button) findViewById(R.id.reg_btn);
@@ -46,7 +48,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 			
 			@Override
 			public void onClick(View v) {
-				// ½«¸Ãapp×¢²áµ½Î¢ĞÅ
+				// å°†è¯¥appæ³¨å†Œåˆ°å¾®ä¿¡
 			    api.registerApp(Constants.APP_ID);    	
 			}
 		});
@@ -84,23 +86,31 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 			}
 		});
         
-        scanBtn = (Button) findViewById(R.id.scan_qrcode_login_btn);
-        scanBtn.setOnClickListener(new View.OnClickListener() {
-
+        payBtn = (Button) findViewById(R.id.goto_pay_btn);
+        payBtn.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
-		        startActivity(new Intent(WXEntryActivity.this, ScanQRCodeLoginActivity.class));
+				startActivity(new Intent(WXEntryActivity.this, PayActivity.class));
 		        finish();
 			}
-        });
+		});
         
-		//×¢Òâ£º
-		//µÚÈı·½¿ª·¢ÕßÈç¹ûÊ¹ÓÃÍ¸Ã÷½çÃæÀ´ÊµÏÖWXEntryActivity£¬ĞèÒªÅĞ¶ÏhandleIntentµÄ·µ»ØÖµ£¬Èç¹û·µ»ØÖµÎªfalse£¬ÔòËµÃ÷Èë²Î²»ºÏ·¨Î´±»SDK´¦Àí£¬Ó¦finishµ±Ç°Í¸Ã÷½çÃæ£¬±ÜÃâÍâ²¿Í¨¹ı´«µİ·Ç·¨²ÎÊıµÄIntentµ¼ÖÂÍ£ÁôÔÚÍ¸Ã÷½çÃæ£¬ÒıÆğÓÃ»§µÄÒÉ»ó
-        try {
-        	api.handleIntent(getIntent(), this);
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
+        favButton = (Button) findViewById(R.id.goto_fav_btn);
+        favButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(WXEntryActivity.this, AddFavoriteToWXActivity.class));
+				finish();
+			}
+		});
+        
+        // debug
+       
+        // debug end
+        
+        api.handleIntent(getIntent(), this);
     }
 
 	@Override
@@ -111,9 +121,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
         api.handleIntent(intent, this);
 	}
 
-	// Î¢ĞÅ·¢ËÍÇëÇóµ½µÚÈı·½Ó¦ÓÃÊ±£¬»á»Øµ÷µ½¸Ã·½·¨
+	// å¾®ä¿¡å‘é€è¯·æ±‚åˆ°ç¬¬ä¸‰æ–¹åº”ç”¨æ—¶ï¼Œä¼šå›è°ƒåˆ°è¯¥æ–¹æ³•
 	@Override
 	public void onReq(BaseReq req) {
+		Toast.makeText(this, "openid = " + req.openId, Toast.LENGTH_SHORT).show();
+		
 		switch (req.getType()) {
 		case ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX:
 			goToGetMsg();		
@@ -121,17 +133,24 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 		case ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX:
 			goToShowMsg((ShowMessageFromWX.Req) req);
 			break;
+		case ConstantsAPI.COMMAND_LAUNCH_BY_WX:
+			Toast.makeText(this, R.string.launch_from_wx, Toast.LENGTH_SHORT).show();
+			break;
 		default:
 			break;
 		}
 	}
 
-	// µÚÈı·½Ó¦ÓÃ·¢ËÍµ½Î¢ĞÅµÄÇëÇó´¦ÀíºóµÄÏìÓ¦½á¹û£¬»á»Øµ÷µ½¸Ã·½·¨
+	// ç¬¬ä¸‰æ–¹åº”ç”¨å‘é€åˆ°å¾®ä¿¡çš„è¯·æ±‚å¤„ç†åçš„å“åº”ç»“æœï¼Œä¼šå›è°ƒåˆ°è¯¥æ–¹æ³•
 	@Override
 	public void onResp(BaseResp resp) {
-		int result = 0;
+		Toast.makeText(this, "openid = " + resp.openId, Toast.LENGTH_SHORT).show();
 		
-		Toast.makeText(this, "baseresp.getType = " + resp.getType(), Toast.LENGTH_SHORT).show();
+		if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+			Toast.makeText(this, "code = " + ((SendAuth.Resp) resp).code, Toast.LENGTH_SHORT).show();
+		}
+		
+		int result = 0;
 		
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK:
@@ -142,9 +161,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 			break;
 		case BaseResp.ErrCode.ERR_AUTH_DENIED:
 			result = R.string.errcode_deny;
-			break;
-		case BaseResp.ErrCode.ERR_UNSUPPORT:
-			result = R.string.errcode_unsupported;
 			break;
 		default:
 			result = R.string.errcode_unknown;
@@ -162,10 +178,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 	}
 	
 	private void goToShowMsg(ShowMessageFromWX.Req showReq) {
-		WXMediaMessage wxMsg = showReq.message;		
+		WXMediaMessage wxMsg = showReq.message;
 		WXAppExtendObject obj = (WXAppExtendObject) wxMsg.mediaObject;
 		
-		StringBuffer msg = new StringBuffer(); // ×éÖ¯Ò»¸ö´ıÏÔÊ¾µÄÏûÏ¢ÄÚÈİ
+		StringBuffer msg = new StringBuffer(); // ç»„ç»‡ä¸€ä¸ªå¾…æ˜¾ç¤ºçš„æ¶ˆæ¯å†…å®¹
 		msg.append("description: ");
 		msg.append(wxMsg.description);
 		msg.append("\n");

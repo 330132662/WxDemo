@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 29
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "net.sourceforge.simcpux"
-        minSdkVersion 14
-        targetSdkVersion 22
+        applicationId "net.sourceforge.simcpux1205"
+        minSdkVersion 4
+        targetSdkVersion 29
+        useLibrary "org.apache.http.legacy"
     }
 
     buildTypes {
@@ -16,14 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-
-    signingConfigs {
-        debug {
-            storeFile file("../debug.keystore")
-        }
-    }
 }
 
 dependencies {
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
+//    compile files('libs/libammsdk.jar')
+    compile files('libs/wechat-sdk-android-with-mta-1.0.2.jar')
+
 }

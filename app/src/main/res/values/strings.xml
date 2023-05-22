@@ -145,7 +145,8 @@
 
 
     <string name="launch_from_wx">Launch From Weixin</string>
-
+    <string name="goto_pay">跳转到支付界面</string>
+    <string name="goto_fav">跳转到收藏界面</string>
     <!-- WXMediaMessage -->
     <string name="input_openid">输入openid</string>
     <string name="input_scope">输入scope</string>

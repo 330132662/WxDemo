@@ -5,7 +5,7 @@
     
     <TextView
         style="@style/TitleText"
-        android:text="@string/pay_by_wx_title"/>
+      />
     
     <Button
         android:id="@+id/appay_btn"

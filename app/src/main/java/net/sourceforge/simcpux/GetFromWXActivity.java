@@ -1,5 +1,7 @@
 package net.sourceforge.simcpux;
 
+import net.sourceforge.simcpux.uikit.CameraUtil;
+import net.sourceforge.simcpux.uikit.MMAlert;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,10 +23,6 @@ import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import net.sourceforge.simcpux.uikit.CameraUtil;
-import net.sourceforge.simcpux.uikit.MMAlert;
-
-
 public class GetFromWXActivity extends Activity {
 
 	private static final int THUMB_SIZE = 150;
@@ -37,7 +35,7 @@ public class GetFromWXActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		// acquire wxapi
-		api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
+		api = WXAPIFactory.createWXAPI(this, Constants.APP_ID,false);
 		bundle = getIntent().getExtras();
 
 		setContentView(R.layout.get_from_wx);
@@ -67,7 +65,7 @@ public class GetFromWXActivity extends Activity {
 						if (text == null || text.length() == 0) {
 							return;
 						}
-						
+
 						// 初始化一个WXTextObject对象
 						WXTextObject textObj = new WXTextObject();
 						textObj.text = text;
@@ -75,13 +73,13 @@ public class GetFromWXActivity extends Activity {
 						// 用WXTextObject对象初始化一个WXMediaMessage对象
 						WXMediaMessage msg = new WXMediaMessage(textObj);
 						msg.description = text;
-						
+
 						// 构造一个Resp
 						GetMessageFromWX.Resp resp = new GetMessageFromWX.Resp();
 						// 将req的transaction设置到resp对象中，其中bundle为微信传递过来的intent所带的内容，通过getExtras方法获取
 						resp.transaction = getTransaction();
 						resp.message = msg;
-						
+
 						// 调用api接口响应数据到微信
 						api.sendResp(resp);
 						finish();
@@ -229,7 +227,11 @@ public class GetFromWXActivity extends Activity {
 	}
 
 	private String getTransaction() {
-		final GetMessageFromWX.Req req = new GetMessageFromWX.Req(bundle);
-		return req.transaction;
+		try {
+			final GetMessageFromWX.Req req = new GetMessageFromWX.Req(bundle);
+			return req.transaction;
+		} catch (Exception e) {
+			return "";
+		}
 	}
 }
